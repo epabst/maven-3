@@ -102,23 +102,47 @@ public class DefaultProfileSelector
 
     private boolean isActive( Profile profile, ProfileActivationContext context, ModelProblemCollector problems )
     {
-        for ( ProfileActivator activator : activators )
-        {
-            try
+        if ( profile.getActivation() != null && !profile.getActivation().isAnd() ) {
+
+            for ( ProfileActivator activator : activators )
             {
-                if ( activator.isActive( profile, context, problems ) )
+                try
                 {
-                    return true;
+                    if ( activator.isActive( profile, context, problems ) )
+                    {
+                        return true;
+                    }
+                }
+                catch ( RuntimeException e )
+                {
+                    problems.add( Severity.ERROR, "Failed to determine activation for profile " + profile.getId(),
+                                  profile.getLocation( "" ), e );
+                    return false;
                 }
             }
-            catch ( RuntimeException e )
-            {
-                problems.add( Severity.ERROR, "Failed to determine activation for profile " + profile.getId(),
-                              profile.getLocation( "" ), e );
-                return false;
-            }
+            return false;
         }
-        return false;
+        else
+        {
+
+            for ( ProfileActivator activator : activators )
+            {
+                try
+                {
+                    if ( !activator.isActive( profile, context, problems ) )
+                    {
+                        return false;
+                    }
+                }
+                catch ( RuntimeException e )
+                {
+                    problems.add( Severity.ERROR, "Failed to determine activation for profile " + profile.getId(),
+                                  profile.getLocation( "" ), e );
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 
     private boolean isActiveByDefault( Profile profile )

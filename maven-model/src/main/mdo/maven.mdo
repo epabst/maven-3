@@ -3093,6 +3093,16 @@
             activators.</description>
         </field>
         <field>
+          <name>and</name>
+          <version>4.0.0</version>
+          <type>boolean</type>
+          <description>
+            <![CDATA[
+            Specifies that this profile will be activated when ALL of the profile activators match instead of when ANY do.
+            ]]>
+          </description>
+        </field>
+        <field>
           <name>jdk</name>
           <version>4.0.0</version>
           <type>String</type>
