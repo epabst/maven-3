@@ -37,10 +37,8 @@ public class OperatingSystemProfileActivator
     implements ProfileActivator
 {
 
-    public boolean isActive( Profile profile, ProfileActivationContext context, ModelProblemCollector problems )
+    public Boolean isActive( Profile profile, ProfileActivationContext context, ModelProblemCollector problems )
     {
-        boolean active = false;
-
         Activation activation = profile.getActivation();
 
         if ( activation != null )
@@ -49,7 +47,7 @@ public class OperatingSystemProfileActivator
 
             if ( os != null )
             {
-                active = ensureAtLeastOneNonNull( os );
+                boolean active = ensureAtLeastOneNonNull( os );
 
                 if ( active && os.getFamily() != null )
                 {
@@ -67,10 +65,12 @@ public class OperatingSystemProfileActivator
                 {
                     active = determineVersionMatch( os.getVersion() );
                 }
+                return active;
             }
         }
 
-        return active;
+        //Activator doesn't apply
+        return null;
     }
 
     private boolean ensureAtLeastOneNonNull( ActivationOS os )

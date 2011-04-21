@@ -38,10 +38,8 @@ public class PropertyProfileActivator
     implements ProfileActivator
 {
 
-    public boolean isActive( Profile profile, ProfileActivationContext context, ModelProblemCollector problems )
+    public Boolean isActive( Profile profile, ProfileActivationContext context, ModelProblemCollector problems )
     {
-        boolean active = false;
-
         Activation activation = profile.getActivation();
 
         if ( activation != null )
@@ -50,6 +48,8 @@ public class PropertyProfileActivator
 
             if ( property != null )
             {
+                boolean active;
+
                 String name = property.getName();
                 boolean reverseName = false;
 
@@ -107,10 +107,12 @@ public class PropertyProfileActivator
                         active = result;
                     }
                 }
+                return active;
             }
         }
 
-        return active;
+        //Activator doesn't apply
+        return null;
     }
 
 }

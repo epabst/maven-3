@@ -1367,6 +1367,25 @@ public class PomConstructionTest
         assertEquals("2.1", pom.getValue( "build/plugins[1]/version" ));
     }    
     
+    /* MNG-4516 */
+    public void testProfileActivationDoesLogicalAnd_NotActivated()
+        throws Exception
+    {
+        PomTestWrapper pom = buildPom( "profile-activation-logical-and1" );
+        assertEquals(0, pom.getMavenProject().getActiveProfiles().size() );
+        assertEquals(0, ( (List<?>) pom.getValue( "build/plugins" )).size() );
+    }
+
+    /* MNG-4516 */
+    public void testProfileActivationDoesLogicalAnd_Activated()
+        throws Exception
+    {
+        PomTestWrapper pom = buildPom( "profile-activation-logical-and2" );
+        assertEquals(1, pom.getMavenProject().getActiveProfiles().size() );
+        assertEquals(1, ( (List<?>) pom.getValue( "build/plugins" )).size() );
+        assertEquals("2.2", pom.getValue( "build/plugins[1]/version" ));
+    }
+
     /* MNG-1995 */
     public void testBooleanInterpolation()
         throws Exception

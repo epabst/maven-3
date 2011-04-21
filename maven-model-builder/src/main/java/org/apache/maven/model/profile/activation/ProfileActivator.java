@@ -39,8 +39,9 @@ public interface ProfileActivator
      *            {@code null}.
      * @param problems The container used to collect problems (e.g. bad syntax) that were encountered, must not be
      *            {@code null}.
-     * @return {@code true} if the profile is active, {@code false} otherwise.
+     * @return {@code Boolean.TRUE} if the profile is active, {@code Boolean.FALSE} if it applies but is not active,
+     *            {@code null} if it doesn't apply.
      */
-    boolean isActive( Profile profile, ProfileActivationContext context, ModelProblemCollector problems );
+    Boolean isActive( Profile profile, ProfileActivationContext context, ModelProblemCollector problems );
 
 }

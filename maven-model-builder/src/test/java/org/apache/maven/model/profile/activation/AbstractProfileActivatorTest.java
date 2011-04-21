@@ -79,7 +79,7 @@ public abstract class AbstractProfileActivatorTest<T extends ProfileActivator>
         return context.setUserProperties( userProperties ).setSystemProperties( systemProperties );
     }
 
-    protected void assertActivation( boolean active, Profile profile, ProfileActivationContext context )
+    protected void assertActivation( Boolean active, Profile profile, ProfileActivationContext context )
     {
         SimpleProblemCollector problems = new SimpleProblemCollector();
 

@@ -40,9 +40,8 @@ public class JdkVersionProfileActivator
     implements ProfileActivator
 {
 
-    public boolean isActive( Profile profile, ProfileActivationContext context, ModelProblemCollector problems )
+    public Boolean isActive( Profile profile, ProfileActivationContext context, ModelProblemCollector problems )
     {
-        boolean active = false;
 
         Activation activation = profile.getActivation();
 
@@ -52,6 +51,7 @@ public class JdkVersionProfileActivator
 
             if ( jdk != null )
             {
+                boolean active;
                 String version = context.getSystemProperties().get( "java.version" );
 
                 if ( version == null || version.length() <= 0 )
@@ -73,10 +73,12 @@ public class JdkVersionProfileActivator
                 {
                     active = version.startsWith( jdk );
                 }
+                return active;
             }
         }
 
-        return active;
+        //Activator doesn't apply
+        return null;
     }
 
     private static boolean isInRange( String value, List<RangeValue> range )

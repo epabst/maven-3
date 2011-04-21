@@ -62,7 +62,7 @@ public class DefaultProfileSelector
 
         List<Profile> activeProfiles = new ArrayList<Profile>( profiles.size() );
         List<Profile> activePomProfilesByDefault = new ArrayList<Profile>();
-        boolean activatedPomProfileNotByDefault = false;
+        boolean activatedPomProfileNotBecauseActiveByDefault = false;
 
         for ( Profile profile : profiles )
         {
@@ -74,7 +74,7 @@ public class DefaultProfileSelector
 
                     if ( Profile.SOURCE_POM.equals( profile.getSource() ) )
                     {
-                        activatedPomProfileNotByDefault = true;
+                        activatedPomProfileNotBecauseActiveByDefault = true;
                     }
                 }
                 else if ( isActiveByDefault( profile ) )
@@ -92,7 +92,7 @@ public class DefaultProfileSelector
             }
         }
 
-        if ( !activatedPomProfileNotByDefault )
+        if ( !activatedPomProfileNotBecauseActiveByDefault )
         {
             activeProfiles.addAll( activePomProfilesByDefault );
         }
@@ -102,13 +102,20 @@ public class DefaultProfileSelector
 
     private boolean isActive( Profile profile, ProfileActivationContext context, ModelProblemCollector problems )
     {
+        boolean anyActivatorApplied = false;
+
         for ( ProfileActivator activator : activators )
         {
             try
             {
-                if ( activator.isActive( profile, context, problems ) )
+                Boolean active = activator.isActive(profile, context, problems);
+                if (active != null)
                 {
-                    return true;
+                    anyActivatorApplied = true;
+                }
+                if ( active == Boolean.FALSE )
+                {
+                    return false;
                 }
             }
             catch ( RuntimeException e )
@@ -118,7 +125,7 @@ public class DefaultProfileSelector
                 return false;
             }
         }
-        return false;
+        return anyActivatorApplied;
     }
 
     private boolean isActiveByDefault( Profile profile )

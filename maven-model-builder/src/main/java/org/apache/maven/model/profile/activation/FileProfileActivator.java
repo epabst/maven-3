@@ -54,20 +54,22 @@ public class FileProfileActivator
         return this;
     }
 
-    public boolean isActive( Profile profile, ProfileActivationContext context, ModelProblemCollector problems )
+    public Boolean isActive( Profile profile, ProfileActivationContext context, ModelProblemCollector problems )
     {
         Activation activation = profile.getActivation();
 
         if ( activation == null )
         {
-            return false;
+            //Activator doesn't apply
+            return null;
         }
 
         ActivationFile file = activation.getFile();
 
         if ( file == null )
         {
-            return false;
+            //Activator doesn't apply
+            return null;
         }
 
         String path;
